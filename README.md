@@ -1,6 +1,6 @@
 # scram
 
-it's like [cram](https://bitheap.org/cram/) or [ppx_expect]((https://github.com/janestreet/ppx_expect)) but for clojure.
+it's like [cram](https://bitheap.org/cram/) or [ppx_expect](https://github.com/janestreet/ppx_expect) but for clojure.
 
 ## what's it do
 
