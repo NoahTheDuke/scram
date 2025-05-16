@@ -15,7 +15,6 @@
 
 (defmacro compare-output
   [form output]
-  (assert (string? output) "Must be given a string literal")
   `(let [ctx# (or scram/*ctx* {:state (atom {:diffs []})})
          result# (binding [scram/*ctx* ctx#]
                    ~(with-meta `(scram/compare-output ~form ~output) (meta &form)))
