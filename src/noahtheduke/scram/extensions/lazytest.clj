@@ -4,8 +4,14 @@
 
 (ns noahtheduke.scram.extensions.lazytest
   (:require
-   [lazytest.core :as lt :refer [defdescribe describe it ->ex-failed]]
+   [lazytest.core :refer [->ex-failed]]
    [noahtheduke.scram :as scram]))
+
+(defmacro defcram
+  [cname & body]
+  `(do (scram/defcram ~cname ~@body)
+       (alter-meta! #'~cname assoc :lazytest/test (fn [] (~cname nil)))
+       #'~cname))
 
 (defmacro compare-output
   [form output]
@@ -19,10 +25,3 @@
                              {:message (:diff diff#)
                               :expected '~output
                               :actual (:actual diff#)})))))
-
-(defdescribe lt-test
-  (describe "example"
-    (it "should work???"
-      (compare-output
-       (print \newline \newline \newline \newline (+ 1 1))
-       "1\n2"))))
