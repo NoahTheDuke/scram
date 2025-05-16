@@ -60,23 +60,29 @@
   (let [diff {:pos pos
               :expected cur-str
               :actual new-str
-              :diff (get-diff path cur-str new-str)
+              :diff (and (string? cur-str)
+                         (string? new-str)
+                         (get-diff path cur-str new-str))
               :path path
               :ns ns}]
     (swap! state
            (fn [state#]
              (-> state#
                  (update :diffs conj diff)
-                 (update :zloc replace-node-at-position pos (node/string-node new-str)))))))
+                 (update :zloc replace-node-at-position pos (when (string? new-str)
+                                                              (node/string-node new-str))))))))
 
 (defmacro compare-output
   "Must be used in a situation where *ctx* is bound to a context map."
   [form output]
-  (assert (string? output) "Must be given a string literal")
+  (assert (or (nil? output) (string? output)) "Must be given a string literal")
   (let [m (meta &form)]
     `(let [pos# ~[(:line m) (:column m)]
            cur-str# ~output
-           new-str# (with-out-str (do ~form))
+           new-str# (let [s# (java.io.StringWriter.)]
+                      (binding [*out* s#]
+                        ~form
+                        (not-empty (str s#))))
            ret# (= cur-str# new-str#)]
        (when-not ret#
          (update-state *ctx* pos# cur-str# new-str#))
