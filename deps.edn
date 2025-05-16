@@ -4,6 +4,7 @@
         org.clojure/tools.cli {:mvn/version "1.1.230"}}
  :aliases
  {:run {:main-opts ["-m" "noahtheduke.scram"]}
+  :provided {:extra-deps {io.github.noahtheduke/lazytest {:mvn/version "1.6.1"}}}
   :dev {:extra-deps {}}
   :test {:extra-paths ["test"]
          :extra-deps {}}

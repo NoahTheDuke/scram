@@ -56,18 +56,17 @@
 (defn update-state
   "Only useful in `compare-output`."
   {:no-doc true}
-  [ctx pos cur-str new-str]
-  (let [state (:state ctx)
-        diff (get-diff (:path ctx) cur-str new-str)]
+  [{:keys [path state ns]} pos cur-str new-str]
+  (let [diff {:pos pos
+              :expected cur-str
+              :actual new-str
+              :diff (get-diff path cur-str new-str)
+              :path path
+              :ns ns}]
     (swap! state
            (fn [state#]
              (-> state#
-                 (update :diffs conj {:pos pos
-                                      :expected cur-str
-                                      :actual new-str
-                                      :diff diff
-                                      :path (:path ctx)
-                                      :ns (:ns ctx)})
+                 (update :diffs conj diff)
                  (update :zloc replace-node-at-position pos (node/string-node new-str)))))))
 
 (defmacro compare-output
@@ -101,8 +100,7 @@
   (assert (simple-symbol? cname) "defcram must be given a symbol")
   (with-meta
     `(defn ~cname
-       {::cram true
-        :test (fn [] (~cname nil))}
+       {::cram true}
        ([]
         (let [cv# (var ~cname)
               {file# :file path# :path} (get-path-from-var cv#)]

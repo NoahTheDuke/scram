@@ -1,2 +1,3 @@
 {:linters {:clojure-lsp/unused-public-var {:level :off}}
- :lint-as {noahtheduke.scram/defcram clojure.core/def}}
+ :lint-as {noahtheduke.scram/defcram clojure.core/def
+           noahtheduke.scram.clojure-test/defcram clojure.core/def}}

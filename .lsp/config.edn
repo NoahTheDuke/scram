@@ -1,0 +1,2 @@
+{:project-specs [{:project-path "deps.edn"
+                  :classpath-cmd ["clojure" "-A:1.12:provided:dev:test:repl" "-Spath"]}]}

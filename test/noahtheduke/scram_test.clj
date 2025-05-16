@@ -5,8 +5,8 @@
 (ns noahtheduke.scram-test 
   (:require
    [clojure.test :refer [is]]
-   [noahtheduke.scram :refer [compare-output defcram]]
-   [noahtheduke.scram.clojure-test]))
+   [noahtheduke.scram :refer [compare-output]]
+   [noahtheduke.scram.clojure-test :refer [defcram]]))
 
 (def example
   "hello
